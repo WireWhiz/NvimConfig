@@ -14,6 +14,7 @@ return {
       map("n", "[h", gs.prev_hunk, "Prev Hunk")
 
       -- Actions
+      map("n", "<leader>h", "", "Git Hunks")
       map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
       map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
       map("v", "<leader>hs", function()
