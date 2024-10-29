@@ -29,7 +29,6 @@ return {
                 "pylyzer",
                 "rust_analyzer",
                 "sqlls",
-                "testlsp",
                 "vimls",
                 "yamlls",
                 "zls",
