@@ -69,7 +69,5 @@ return {
         vim.keymap.set("n", "<leader>o", "", { desc = "Overseer" })
         vim.keymap.set("n", "<leader>ot", "<cmd>OverseerToggle<CR>", {desc= "Toggle task list" })
         vim.keymap.set("n", "<leader>or", "<cmd>OverseerRun<CR>", {desc= "Select & run a task" })
-
-
     end
 }
