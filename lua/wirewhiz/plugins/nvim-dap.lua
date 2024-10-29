@@ -22,7 +22,7 @@ return {
         local mason_registry = require("mason-registry")
         local codelldb_root = mason_registry.get_package("codelldb"):get_install_path() .. "/extension/"
         local codelldb_path = codelldb_root .. "adapter/codelldb"
-        dap.adapters.codelldb = {
+        dap.adapters.lldb = {
             type ="server",
             port = "${port}",
             executable = {
@@ -36,12 +36,6 @@ return {
         end
         dap.listeners.before.launch.dapui_config = function()
             ui.open()
-        end
-        dap.listeners.before.event_terminated.dapui_config = function()
-            ui.close()
-        end
-        dap.listeners.before.event_exited.dapui_config = function()
-            ui.close()
         end
 
         vim.keymap.set("n", "<leader>du", function() ui.toggle() end, { desc = "Toggle DAP UI"})
