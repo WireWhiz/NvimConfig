@@ -58,6 +58,8 @@ return {
         vim.keymap.set("n", "<leader>ds", function() dap.session() end, { desc = "Session" })
         vim.keymap.set("n", "<leader>dt", function() dap.terminate() end, { desc = "Terminate" })
         vim.keymap.set("n", "<leader>dw", function() require("dap.ui.widgets").hover() end, { desc = "Widgets" })
+        vim.keymap.set("n", "<leader>df", function() dap.focus_frame() end, { desc = "Focus current point of execution" })
+        
 
         require("overseer").setup()
         vim.keymap.set("n", "<leader>o", "", { desc = "Overseer" })

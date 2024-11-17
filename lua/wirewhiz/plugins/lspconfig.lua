@@ -4,11 +4,11 @@ return {
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim", opts = {}},
+        { "folke/neodev.nvim",                   opts = {} },
     },
     config = function()
         local lspconfig = require("lspconfig")
-        
+
         local mason_lspconfig = require("mason-lspconfig")
 
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -18,7 +18,6 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
-
                 -- See `:help vim.lsp.*` for documentation on any of the below functions
                 local opts = { buffer = ev.buf, silent = true }
 
@@ -61,7 +60,7 @@ return {
 
                 keymap.set("n", "<leader>r", "LSP")
                 opts.desc = "Restart LSP"
-                keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary 
+                keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
             end,
         })
 
@@ -78,8 +77,21 @@ return {
             -- default handler for installed servers
             function(server_name)
                 lspconfig[server_name].setup({
-                capabilities = capabilities,
-            })
+                    capabilities = capabilities,
+                })
+            end,
+            ["ts_ls"] = function()
+                lspconfig["ts_ls"].setup({
+                    capabilities = capabilities,
+                    settings = {
+                        typescript = {
+                            preferences = {
+                                -- importModuleSpecifier = "non-relative", -- or "relative"
+                                moduleResolution = "node16"
+                            },
+                        },
+                    },
+                })
             end,
             ["lua_ls"] = function()
                 -- configure lua server (with special settings)
