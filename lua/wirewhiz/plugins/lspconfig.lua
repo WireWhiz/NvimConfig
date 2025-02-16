@@ -80,6 +80,14 @@ return {
                     capabilities = capabilities,
                 })
             end,
+            ["clangd"] = function()
+                lspconfig.clangd.setup {
+                    capabilities = capabilities,
+                    init_options = {
+                        fallbackFlags = { '-std=c++23' }
+                    }
+                }
+            end,
             ["ts_ls"] = function()
                 lspconfig["ts_ls"].setup({
                     capabilities = capabilities,

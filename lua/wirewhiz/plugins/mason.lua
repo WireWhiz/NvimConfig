@@ -32,7 +32,7 @@ return {
                 "vimls",
                 "yamlls",
                 "zls",
-                "ast_grep"
+                "ast_grep",
             }
         })
     end
