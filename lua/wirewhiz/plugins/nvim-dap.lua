@@ -30,13 +30,27 @@ return {
         dap.adapters.gdb = {
             type = "executable",
             command = "gdb",
-            args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+            args = {
+                "--interpreter=dap",
+                "--eval-command", "set print pretty on",
+                "--eval-command", "catch throw",
+                "--eval-command", "catch exit"
+            }
+        }
+
+        dap.adapters.lldb = {
+            type = "server",
+            port = "${port}",
+            executable = {
+                command = "lldb-dap",
+                args = { "--port", "${port}" },
+            }
         }
 
         local mason_registry = require("mason-registry")
         local codelldb_root = mason_registry.get_package("codelldb"):get_install_path() .. "/extension/"
         local codelldb_path = codelldb_root .. "adapter/codelldb"
-        dap.adapters.lldb = {
+        dap.adapters.codelldb = {
             type = "server",
             port = "${port}",
             executable = {

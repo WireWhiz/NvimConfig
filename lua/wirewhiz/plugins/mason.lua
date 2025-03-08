@@ -33,7 +33,7 @@ return {
                 "yamlls",
                 "zls",
                 "ast_grep",
-            }
+            },
         })
     end
 }
