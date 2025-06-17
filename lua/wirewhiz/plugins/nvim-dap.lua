@@ -7,7 +7,6 @@ return {
         "stevearc/overseer.nvim",
         "jay-babu/mason-nvim-dap.nvim",
         "theHamsta/nvim-dap-virtual-text",
-
     },
     opts = function(_, opts)
         vim.fn.sign_define("DapBreakpoint",
@@ -26,7 +25,7 @@ return {
             ensure_installed = { "codelldb" }
         })
 
-        local dap = require("dap")
+        --dap.defaults.fallback.terminal_win_cmd = "belowright split new"
         dap.adapters.gdb = {
             type = "executable",
             command = "gdb",
@@ -47,150 +46,19 @@ return {
             }
         }
 
-        local mason_registry = require("mason-registry")
-        local codelldb_root = mason_registry.get_package("codelldb"):get_install_path() .. "/extension/"
-        local codelldb_path = codelldb_root .. "adapter/codelldb"
         dap.adapters.codelldb = {
             type = "server",
             port = "${port}",
             executable = {
-                command = codelldb_path,
+                command = "codelldb.cmd",
                 args = { "--port", "${port}" },
             },
         }
-
-
-        if vim.fn.has("win32") == 1 then
-            function log_to_file(path, obj)
-                local function dump(o, i)
-                    if type(o) == 'table' then
-                        local s = ""
-                        for t = 0, i do
-                            s = s .. "  "
-                        end
-
-
-                        s = s .. '{ \n'
-                        for k, v in pairs(o) do
-                            if type(k) ~= 'number' then k = '"' .. k .. '"' end
-
-                            for t = 0, i do
-                                s = s .. "  "
-                            end
-                            s = s .. '[' .. k .. '] = ' .. dump(v, i + 1) .. ',\n'
-                        end
-
-                        for t = 0, i do
-                            s = s .. "  "
-                        end
-                        return s .. '}\n '
-                    else
-                        return tostring(o)
-                    end
-                end
-                local sp = dump(obj, 0)
-                local file = io.open(path, "w+")
-                io.output(file)
-                io.write(sp)
-                io.close(file)
-            end
-
-            local utils = require('dap.utils')
-
-            local rpc = require('dap.rpc')
-
-            local function send_payload(client, payload)
-                local msg = rpc.msg_with_content_length(vim.json.encode(payload))
-                client.write(msg)
-            end
-
-            function RunHandshake(self, request_payload)
-                local signResult = io.popen('node %localappdata%\\nvim\\js\\vsdbg-sign.js ' ..
-                    request_payload.arguments.value)
-                if signResult == nil then
-                    log_to_file("payload_msg.txt", 'error while signing handshake')
-                    utils.notify('error while signing handshake', vim.log.levels.ERROR)
-                    return
-                end
-                local signature = signResult:read("*a")
-                signature = string.gsub(signature, '\n', '')
-                local response = {
-                    type = "response",
-                    seq = 0,
-                    command = "handshake",
-                    request_seq = request_payload.seq,
-                    success = true,
-                    body = {
-                        signature = signature
-                    }
-                }
-                send_payload(self.client, response)
-                log_to_file("payload_msg.txt", response)
-            end
-
-            local cpptools_root = os.getenv("USERPROFILE") ..
-                "\\.vscode\\extensions\\ms-vscode.cpptools-1.23.6-win32-x64\\"
-            local cppdbg_path = cpptools_root .. "debugAdapters\\vsdbg\\bin\\vsdbg.exe"
-
-            dap.adapters.cppvsdbg = {
-                type = "executable",
-                id = "cppvsdbg",
-                command = cppdbg_path,
-                args = { "--interpreter=vscode" },
-                options = {
-                    externalTerminal = true,
-                    logging = {
-                        moduleLoad = false,
-                        trace = true
-                    }
-                },
-                runInTerminal = true,
-                reverse_request_handlers = {
-                    handshake = RunHandshake,
-
-                },
-            }
-
-            dap.listeners.before["initialize"]['validate_cppvsdbg_configs'] = function(session, body)
-                if not session.config.type == "cppvsdbg" then
-                    return
-                end
-
-                local config = session.config
-                config.clientID = 'vscode'
-                config.clientName = 'vscode'
-                config.externalTerminal = true
-                config.columnsStartAt1 = true
-                config.columnsStartAt1 = true
-                config.linesStartAt1 = true
-                config.locale = "en"
-                config.pathFormat = "path"
-                config.externalConsole = true
-
-                session.config = config
-                --log_to_file("session_before.txt", session.config)
-            end
-
-
-            -- local cpptools_root = mason_registry.get_package("cpptools"):get_install_path() .. "/extension/"
-            -- local cpptools_path = cpptools_root .. "/debugAdapters/bin/OpenDebugAD7.exe"
-            --
-            -- dap.adapters.cppdbg = {
-            --     type = "executable",
-            --     name = "cppdbg",
-            --     id = "cppdbg",
-            --     command = cpptools_path,
-            --     options = {
-            --         detached = false
-            --     },
-            -- }
-        end
 
         dap.defaults.fallback.external_terminal = {
             command = 'cmd',
             args = { '-e' },
         }
-
 
         dap.listeners.before.attach.dapui_config = function()
             ui.open()

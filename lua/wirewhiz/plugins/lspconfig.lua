@@ -73,51 +73,39 @@ return {
         end
 
 
-        mason_lspconfig.setup_handlers({
-            -- default handler for installed servers
-            function(server_name)
-                lspconfig[server_name].setup({
-                    capabilities = capabilities,
-                })
-            end,
-            ["clangd"] = function()
-                lspconfig.clangd.setup {
-                    capabilities = capabilities,
-                    init_options = {
-                        fallbackFlags = { '-std=c++23' }
-                    }
+        vim.lsp.config("clangd",
+            {
+                init_options = {
+                    fallbackFlags = { '-std=c++23' }
                 }
-            end,
-            ["ts_ls"] = function()
-                lspconfig["ts_ls"].setup({
-                    capabilities = capabilities,
-                    settings = {
-                        typescript = {
-                            preferences = {
-                                -- importModuleSpecifier = "non-relative", -- or "relative"
-                                moduleResolution = "node16"
-                            },
+            })
+        vim.lsp.config("ts_ls",
+            {
+                settings = {
+                    typescript = {
+                        preferences = {
+                            -- importModuleSpecifier = "non-relative", -- or "relative"
+                            moduleResolution = "node16"
                         },
                     },
-                })
-            end,
-            ["lua_ls"] = function()
-                -- configure lua server (with special settings)
-                lspconfig["lua_ls"].setup({
-                    capabilities = capabilities,
-                    settings = {
-                        Lua = {
-                            -- make the language server recognize "vim" global
-                            diagnostics = {
-                                globals = { "vim" },
-                            },
-                            completion = {
-                                callSnippet = "Replace",
-                            },
+                },
+            })
+        vim.lsp.config("lua_ls",
+            {
+                settings = {
+                    Lua = {
+                        -- make the language server recognize "vim" global
+                        diagnostics = {
+                            globals = { "vim" },
+                        },
+                        completion = {
+                            callSnippet = "Replace",
                         },
                     },
-                })
-            end,
-        })
+                },
+            })
+        mason_lspconfig.setup {
+            ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "ts_ls" }
+        }
     end
 }

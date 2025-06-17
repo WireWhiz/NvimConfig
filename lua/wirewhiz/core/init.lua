@@ -1,3 +1,4 @@
 require("wirewhiz.core.options")
 require("wirewhiz.core.keymaps")
-require("wirewhiz.core.shell")
+-- don't need shell behaviour anymore
+--require("wirewhiz.core.shell")
