@@ -32,6 +32,7 @@ return {
                 "vimls",
                 "yamlls",
                 "zls",
+                "ltex-ls-plus"
             },
         })
     end
