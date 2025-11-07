@@ -54,6 +54,30 @@ return {
                 args = { "--port", "${port}" },
             },
         }
+        dap.configurations.c = {
+            {
+                name = "codelldb",
+                type = "codelldb", -- Matches the adapter name
+                request = "launch",
+                program = function()
+                    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. '/', "file")
+                end,
+                cwd = "${workspaceFolder}",
+                stopOnEntry = false,
+            },
+            {
+                name = "gdb",
+                type = "gdb", -- Matches the adapter name
+                request = "launch",
+                program = function()
+                    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. '/', "file")
+                end,
+                cwd = "${workspaceFolder}",
+                stopOnEntry = false,
+            },
+        }
+        dap.configurations.cpp = dap.configurations.c
+        dap.configurations.rust = dap.configurations.c
 
         dap.defaults.fallback.external_terminal = {
             command = 'cmd',
