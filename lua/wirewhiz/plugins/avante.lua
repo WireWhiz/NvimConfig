@@ -13,7 +13,7 @@ return {
     ---@module 'avante'
     ---@type avante.Config
     opts = {
-        provider = "openai",
+        provider = "ollama",
         providers = {
             openai = {
                 endpoint = "https://api.openai.com/v1/",
@@ -25,7 +25,7 @@ return {
             },
             ollama = {
                 endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
-                model = "qwen2.5-coder:32b",         -- Recommend externally running `ollama run qwq:32b` before trying to run nvim to pre-download the model
+                model = "qwen2.5-coder:14b",         -- Recommend externally running `ollama run qwq:32b` before trying to run nvim to pre-download the model
             },
         },
     },
