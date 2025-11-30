@@ -104,6 +104,18 @@ return {
                     },
                 },
             })
+        vim.lsp.config("expert", {
+            cmd = { "expert", "--stdio" },
+            root_dir = function(fname)
+                return require('lspconfig').util.root_pattern("mix.exs", ".git")(fname) or vim.loop.cwd()
+            end,
+            filetypes = { "elixir", "eelixir", "heex", "exs" },
+            settings = {
+                Elixir = {
+                    -- Add any specific Elixir settings here if needed
+                },
+            }
+        })
         mason_lspconfig.setup {
             ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "ts_ls" }
         }

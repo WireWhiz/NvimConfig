@@ -33,7 +33,8 @@ return {
                 "yamlls",
                 "zls",
                 "ltex",
-                "ltex_plus"
+                "ltex_plus",
+                "expert"
             },
         })
     end

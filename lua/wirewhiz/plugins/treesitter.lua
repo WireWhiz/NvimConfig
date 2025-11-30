@@ -51,7 +51,8 @@ return {
                 "vimdoc",
                 "regex",
                 "sql",
-                "zig"
+                "zig",
+                "elixir"
             },
             incremental_selection = {
                 enable = true,
