@@ -16,7 +16,6 @@ return {
             ensure_installed = {
                 "arduino_language_server",
                 "bashls",
-                "csharp_ls",
                 "clangd",
                 "tailwindcss",
                 "gradle_ls",
