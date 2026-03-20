@@ -13,19 +13,21 @@ return {
     ---@module 'avante'
     ---@type avante.Config
     opts = {
-        provider = "ollama",
+        provider = "llamacpp", -- set as default if you want
         providers = {
-            openai = {
-                endpoint = "https://api.openai.com/v1/",
-                model = "gpt-5",
-                timeout = 30000,
-                extra_request_body = {
-                    temperature = 1
-                }
-            },
             ollama = {
-                endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
-                model = "qwen2.5-coder:14b",         -- Recommend externally running `ollama run qwq:32b` before trying to run nvim to pre-download the model
+                endpoint = "http://127.0.0.1:11434",
+                model = "qwen2.5-coder:14b",
+            },
+            llamacpp = {
+                __inherited_from = "openai",
+                endpoint = "http://127.0.0.1:2001/v1",
+                model = "Qwen3.5-27B", -- must match --alias value
+                timeout = 60000,
+                extra_request_body = {
+                    temperature = 0.6,
+                    max_tokens = 8192,
+                }
             },
         },
     },

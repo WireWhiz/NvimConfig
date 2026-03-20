@@ -34,7 +34,8 @@ return {
                 },
             },
             git = {
-                ignore = true,
+                ignore = false,
+                disable_for_dirs = { "target", "build", "node_modules", ".git", ".next" }
             },
         })
 
