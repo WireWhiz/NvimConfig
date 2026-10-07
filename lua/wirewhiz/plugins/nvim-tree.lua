@@ -33,6 +33,9 @@ return {
                     },
                 },
             },
+            filesystem_watchers = {
+                ignore_dirs = { "/.ccls-cache", "/build", "/node_modules", "/target", "/dist", "/.git" },
+            },
             git = {
                 ignore = false,
                 disable_for_dirs = { "target", "build", "node_modules", ".git", ".next" }

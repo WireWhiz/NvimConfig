@@ -73,6 +73,15 @@ return {
         end
 
 
+        -- Neovim 0.11 watches every dir a server asks for with recursive libuv watchers,
+        -- which gets huge with node_modules/dist/target. Turn that off for all servers.
+        capabilities.workspace = capabilities.workspace or {}
+        capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = false }
+        vim.lsp.config("*", { capabilities = capabilities })
+
+        -- servers log every message at WARN/INFO, lsp.log had grown to 170MB
+        vim.lsp.log.set_level("ERROR")
+
         vim.lsp.config("clangd",
             {
                 init_options = {
@@ -117,7 +126,8 @@ return {
             }
         })
         mason_lspconfig.setup {
-            ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "ts_ls" }
+            ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "ts_ls" },
+            automatic_enable = { exclude = { "ltex", "ltex_plus" } },
         }
     end
 }

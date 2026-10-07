@@ -31,10 +31,11 @@ return {
                 "vimls",
                 "yamlls",
                 "zls",
-                "ltex",
-                "ltex_plus",
                 "expert"
             },
+            -- ltex runs a JVM that grammar-checks every markdown buffer, and ltex_plus
+            -- crash-loops on this Java version. Both ate RAM and spammed lsp.log.
+            automatic_enable = { exclude = { "ltex", "ltex_plus" } },
         })
     end
 }
